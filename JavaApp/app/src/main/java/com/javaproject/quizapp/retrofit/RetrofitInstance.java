@@ -5,11 +5,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitInstance {
 
-    String baseUrl = "http://192.168.8.118/quiz/";
-
     public Retrofit getRetrofitInstance(){
         return new Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl("http://192.168.1.6/quiz/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
