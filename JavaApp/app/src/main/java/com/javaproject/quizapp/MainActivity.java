@@ -6,10 +6,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.view.Window;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -22,11 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    int i = 0;
+    static String username;
+    private int i = 0;
     ActivityMainBinding activityMainBinding;
     QuizViewModel quizViewModel;
-    List<Question> questionList;
-
     static int result = 0;
     static int totalQuestions = 0;
     List<Question> questionsList;
@@ -39,19 +42,39 @@ public class MainActivity extends AppCompatActivity {
         activityMainBinding = DataBindingUtil
                 .setContentView(this, R.layout.activity_main);
 
+        // SET NAME
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.custom_dialog);
+
+        EditText usernameInput = dialog.findViewById(R.id.username_input);
+        Button searchButton = dialog.findViewById(R.id.search_username);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                username = usernameInput.getText().toString();
+                System.out.println("❤️✅ username: "+username);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
         // Resetting the Scores:
         result = 0;
         totalQuestions = 0;
 
+        System.out.println("1 🔴🚨hi");
         // getting the response:
         quizViewModel = new ViewModelProvider(this)
                 .get(QuizViewModel.class);
 
-
+        System.out.println("3 🔴🚨hi");
         // Displaying the First Question
         quizViewModel.getQuestionsListLiveData().observe(this, new Observer<QuestionsList>() {
             @Override
             public void onChanged(QuestionsList questions) {
+                System.out.println("🔴🚨hi");
                 questionsList  = questions;
 
                 Log.i("TAGY","The first Question: "+questions.get(0));
@@ -64,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         // Displaying the Next Questions
         activityMainBinding.btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 // Direct the user to the results Activity
                 if (activityMainBinding.btnNext.getText().equals("Finish")){
                     Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
+                    intent.putExtra("USER_NAME", username);
                     startActivity(intent);
                     finish();
                 }

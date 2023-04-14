@@ -20,7 +20,9 @@ public class ResultsActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this,R.layout.activity_results);
 
-        binding.txtAnswer.setText("Your Score is: "
+        System.out.println("✅ ✅ binding: "+MainActivity.username);
+
+        binding.txtAnswer.setText(MainActivity.username+", ton score final: "
                 +MainActivity.result
                 +"/"+MainActivity.totalQuestions);
 

@@ -26,9 +26,12 @@ public class QuizRepository {
 
         MutableLiveData<QuestionsList> data = new MutableLiveData<>();
         Call<QuestionsList> response = questionsAPI.getQuestions();
+        System.out.println("response 🔴🚨 :"+response);
+        System.out.println(response);
         response.enqueue(new Callback<QuestionsList>() {
             @Override
             public void onResponse(Call<QuestionsList> call, Response<QuestionsList> response) {
+                System.out.println("SUCCESS ✅ onResponse :");
                 //saving the data to the list
                 QuestionsList list = response.body();
                 data.setValue(list);
@@ -37,7 +40,7 @@ public class QuizRepository {
 
             @Override
             public void onFailure(Call<QuestionsList> call, Throwable t) {
-
+                System.out.println("ERROR onFailure 🔴🚨 :");
             }
         });
         return data;
